@@ -1,1 +1,21 @@
+version: '3.8'
 
+services:
+  app:
+    image: php:8.2-apache
+    ports:
+      - "8080:80"
+
+  ai-service:
+    image: python:3.11
+    working_dir: /app
+    volumes:
+      - ./ai-service:/app
+    command: sh -c "pip install -r requirements.txt && uvicorn app.main:app --host 0.0.0.0 --port 8000"
+    ports:
+      - "8000:8000"
+
+  mongo:
+    image: mongo:6
+    ports:
+      - "27017:27017"
